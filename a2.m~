@@ -44,13 +44,12 @@ for fileName = filesArray
 
              headersTable.Properties.VariableNames=columnNames;  
                 
-             %final data of the file that needs to be written to file in append fashion
-             
+             %fina
              dataTable = [headersTable dataTable]
              cd(classDirectory)
              gestureFileName = char(key)+ ".csv"
-             
              %writetable(dataTable,gestureFileName);
+             
              dlmwrite(gestureFileName, dataTable, 'delimiter', ',');
              
              %Increment the Action value for the next iteration
