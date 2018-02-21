@@ -2,6 +2,8 @@ clc
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1,];
 mapObj = containers.Map(gestures,actions);
+
+%directory where the final 10 csv will be stores
 classDirectory = '/home/prabhat/Documents/MATLAB/ASL/ClassDirectory';
 pwd
 path = uigetdir(pwd, 'Select a folder');
