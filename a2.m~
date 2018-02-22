@@ -2,8 +2,7 @@ clc
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
-%empty cell array for 10 indices
-mergedData{10} = []
+mergedData = {}
 %directory where the final 10 csv will be stores
 classDirectory = '/home/prabhat/Documents/MATLAB/ASL/ClassDirectory';
 pwd
@@ -23,9 +22,9 @@ for fileName = filesArray
              tempArray = table2array(data);
              dataTable = array2table(tempArray.');
              
-             currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))))
-             mergedData{currentGestureIndex} = vertcat(mergedData{currentGestureIndex}, dataTable)
+             currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));
              
+
          end
     end
 end
