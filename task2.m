@@ -1,4 +1,5 @@
 clc
+clear
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path);
 files = dir(fullfile(path, '*.csv'));
@@ -13,7 +14,7 @@ for k = 1:length(filesArray)
         sensorNames = T(1:height(T),2);
         sensorNames = table2array(sensorNames);
         uniqueSensorNames = unique(sensorNames);
-        count = false
+        count = false;
     end
         %each layer is one sensor data 
         currentGesture=[];
@@ -26,4 +27,16 @@ for k = 1:length(filesArray)
         currentGesture(:,:,i) = tempArr; 
     end
     allGestures{k} = currentGesture;
+end
+
+allStats = {};
+for k = 1 : length(allGestures)
+    currentStats = [];
+    tempArray = mean(allGestures{k});
+    currentStats = vertcat(currentStats, tempArray);
+    tempArray = rms(allGestures{k});
+    currentStats = vertcat(currentStats, tempArray);
+    tempArray = std(allGestures{k});
+    currentStats = vertcat(currentStats, tempArray);
+    allStats{k} =  currentStats;
 end
