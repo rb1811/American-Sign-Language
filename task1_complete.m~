@@ -33,22 +33,22 @@ headers = textscan(headerline,'%s','Delimiter',',');
 fclose(fid);  
 
 headers = cell2table(strsplit(headerline,","));
-headers = headers(:,1:34);
+headers = headers(:,1:3);
 %directory where the final 10 csv will be stores
 outputDirectory = uigetdir(pwd, 'Select Destination folder to write files');
 cd(outputDirectory);
 for key = keys(mapObj)
     currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));       
-    n = height(mergedData{currentGestureIndex})/34;
+    n = height(mergedData{currentGestureIndex})/33;
     headervalue = repmat(headers,1,round(n));
-    serialno=arrayfun(@num2str,1:34*round(n),'uni',0);
-    index = repmat(1:round(n),[34 1]);
+    serialno=arrayfun(@num2str,1:33*round(n),'uni',0);
+    index = repmat(1:round(n),[33 1]);
     index = index(:);
     columnNames = {'ActionID','SensorName'};
     tempArray = table2array(headervalue);
     sensorArray = tempArray.';
     %create the appropriate actionArray
-    actionArray = strings(round(n)*34,1);
+    actionArray = strings(round(n)*33,1);
     actionArray(:) = strcat('Action ', num2str(index(:)));
     %create the header table by concat of the above two
     headersArray = horzcat(actionArray, sensorArray);
