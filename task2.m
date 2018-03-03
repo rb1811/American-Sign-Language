@@ -32,11 +32,11 @@ end
 allStats = {};
 for k = 1 : length(allGestures)
     currentStats = [];
-    tempArray = mean(allGestures{k});
+    tempArray = mean(fft(allGestures{k},[],2));
     currentStats = vertcat(currentStats, tempArray);
-    tempArray = rms(allGestures{k});
+    tempArray = rms(fft(allGestures{k},[],2));
     currentStats = vertcat(currentStats, tempArray);
-    tempArray = std(allGestures{k});
+    tempArray = std(fft(allGestures{k},[],2));
     currentStats = vertcat(currentStats, tempArray);
     allStats{k} =  currentStats;
 end
