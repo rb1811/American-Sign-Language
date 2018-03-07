@@ -51,8 +51,8 @@ for k = 1 : length(allGestures)
     tempArr_size = size(tempArray);
     temp = reshape(tempArray,[tempArr_size(1)*tempArr_size(2),tempArr_size(3)]);
     pca_input{k} =  temp;
-    [coeff,score,latent]  = pca(pca_input{1}.');
-    pca_output{k} = coeff(:,1:11);
+    [coeff,score,latent]  = pca(pca_input{k}.');
+    pca_output{k} = coeff(:,1:11)*(score(:,1:11).');
 end
 
 
