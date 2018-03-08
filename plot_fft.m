@@ -42,7 +42,7 @@ for i = 1:length(allStats)
 	grid on	
 	subplot(1,2,2); plot3(meanacc(4,:),meanacc(5,:),meanacc(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_acc"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_acc";
 	filename = "mean_acc"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -52,7 +52,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(meangyro(4,:),meangyro(5,:),meangyro(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_gyro"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_gyro";
 	filename = "mean_gyro"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -61,7 +61,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(meanori(4,:),meanori(5,:),meanori(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_orie"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"mean_orie";
 	filename = "mean_orie"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -72,7 +72,7 @@ for i = 1:length(allStats)
 	grid on	
 	subplot(1,2,2); plot3(rmsacc(4,:),rmsacc(5,:),rmsacc(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_acc"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_acc";
 	filename = "rms_acc"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -81,7 +81,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(rmsgyro(4,:),rmsgyro(5,:),rmsgyro(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_gyro"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_gyro";
 	filename = "rms_gyro"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -90,7 +90,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(rmsori(4,:),rmsori(5,:),rmsori(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_orie"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"rms_orie";
 	filename = "rms_orie"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -100,7 +100,7 @@ for i = 1:length(allStats)
 	grid on	
 	subplot(1,2,2); plot3(stdacc(4,:),stdacc(5,:),stdacc(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_acc"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_acc";
 	filename = "std_acc"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -109,7 +109,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(stdgyro(4,:),stdgyro(5,:),stdgyro(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_gyro"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_gyro";
 	filename = "std_gyro"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 	
@@ -118,7 +118,7 @@ for i = 1:length(allStats)
 	grid on
 	subplot(1,2,2); plot3(stdori(4,:),stdori(5,:),stdori(6,:)); title("Right Hand");
 	grid on
-	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_orie"
+	path = "/home/prabhat/Documents/ASL/code/output/images/"+"std_orie";
 	filename = "std_orie"+filesArray{i}(1:end-4)
 	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 		
