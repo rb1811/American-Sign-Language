@@ -26,6 +26,7 @@ for k = 1:length(filesArray)
         end
         currentGesture(:,:,i) = tempArr; 
     end
+    
     allGestures{k} = currentGesture;
 end
 
@@ -39,4 +40,6 @@ for k = 1 : length(allGestures)
     tempArray = std(fft(allGestures{k},[],2));
     currentStats = vertcat(currentStats, tempArray);
     allStats{k} =  currentStats;
+    
 end
+
