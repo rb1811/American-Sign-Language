@@ -1,3 +1,4 @@
+clear
 clc
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1];
@@ -23,16 +24,18 @@ for k  = 1:5
                  fileName = char(subDirPath+"/"+fileName);
 
                  T = readtable(fileName);
-                 data=T(1:height(T),1:34);
+                 if height(T)>55
+                     continue;
+                 end
+                    data=T(1:height(T),1:34);
+                    tempArray = table2array(data);
+                    %pad the extra rows with 0s
+                    tempArray = [tempArray;zeros(55-height(T), 34)];
+                    dataTable = array2table(tempArray.');
 
-                 tempArray = table2array(data);
-                 %pad the extra rows with 0s
-                 tempArray = [tempArray;zeros(85-height(T), 34)];
-                 dataTable = array2table(tempArray.');
-
-                 currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));
-                 mergedData{currentGestureIndex} = vertcat(mergedData{currentGestureIndex}, dataTable);
-
+                    currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));
+                    mergedData{currentGestureIndex} = vertcat(mergedData{currentGestureIndex}, dataTable);
+                
              end
         end
     end
