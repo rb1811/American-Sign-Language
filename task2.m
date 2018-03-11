@@ -25,7 +25,8 @@ for k = 1:length(filesArray)
     
     allGestures{k} = currentGesture;
 end
-
+%calculate the statistics and store them in cell array. The order is mean,
+%rms and std.
 allStats = {};
 for k = 1 : length(allGestures)
     currentStats = [];
@@ -38,4 +39,5 @@ for k = 1 : length(allGestures)
     allStats{k} =  currentStats;
     
 end
+disp("done")
 

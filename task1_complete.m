@@ -1,19 +1,21 @@
 clear
-clc
+clc                 
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
-%empty cell array for 10 indices
+%initialize cell array to store data
 mergedData{10} = [];
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path)
 folders = dir(path);
 isub = [folders(:).isdir];
 nameFolds = {folders(isub).name}';
+%remove the the dot and double dot folders for Linux systems to avoid
+%recursive file reading
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
 for k  = 1:5
     %We are working with first 5 folders. Change the number to
-    %length(filesArray) to make it work for all sub folders.
+    %length(nameFolds) to make it work for all sub folders.
     subDirPath = char(path+"/"+nameFolds{k})
     files = dir(fullfile(subDirPath, '*.csv'));
     filesArray = {files.name};
@@ -24,6 +26,8 @@ for k  = 1:5
                  fileName = char(subDirPath+"/"+fileName);
 
                  T = readtable(fileName);
+                 %Skip the files if the  time series data for the action is
+                 %more than 55
                  if height(T)>55
                      continue;
                  end
@@ -40,7 +44,7 @@ for k  = 1:5
         end
     end
 end
-
+%Create the header array consisting of the sensor names
 fid = fopen(char(subDirPath+"/"+fileName),'r');
 headerline  = fgetl(fid);
 headers = textscan(headerline,'%s','Delimiter',',');
