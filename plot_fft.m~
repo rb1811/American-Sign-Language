@@ -44,7 +44,7 @@ for i = 1:length(allStats)
     xlabel('Mean ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Mean ALZ');
 	grid on	
 	subplot(1,2,2); plot3(meanacc(4,:),meanacc(5,:),meanacc(6,:)); title("Right Hand");
-    xlabel('Mean ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Mean ARZ');
+    xlabel('Mean ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ARY'); set(get(gca,'ylabel'),'rotation',-45);zlabel('Mean ARZ');
 	h = rotate3d; 
     grid on
 	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_acc";
