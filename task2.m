@@ -37,7 +37,22 @@ for k = 1 : length(allGestures)
     tempArray = std(fft(allGestures{k},[],2));
     currentStats = vertcat(currentStats, tempArray);
     allStats{k} =  currentStats;
-    
 end
-disp("done")
 
+approx = [];
+wname = 'db1';
+[Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname); 
+dwtAllGestures= [];
+for gesture = 1:length(allGestures)
+    for sensor = 1:size(allGestures{gesture},3)
+        for action = 1:size(allGestures{gesture}(:,:,sensor),1)
+            [c,l] = wavedec(allGestures{gesture}(action,:,sensor),6,Lo_D,Hi_D);
+            approx(action) = appcoef(c,l,wname);
+        end
+        dwtAllGestures(1,sensor,gesture) = mean(approx(action));
+        dwtAllGestures(2,sensor,gesture) = rms(approx(action));
+        dwtAllGestures(3,sensor,gesture) = std(approx(action));
+        dwtAllGestures(4,sensor,gesture) = max(approx(action));
+        dwtAllGestures(5,sensor,gesture) = min(approx(action)); 
+    end
+end

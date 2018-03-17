@@ -13,7 +13,7 @@ nameFolds = {folders(isub).name}';
 %remove the the dot and double dot folders for Linux systems to avoid
 %recursive file reading
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
-for k  = 1:5
+for k  = 1:length(nameFolds)
     %We are working with first 5 folders. Change the number to
     %length(nameFolds) to make it work for all sub folders.
     subDirPath = char(path+"/"+nameFolds{k})
@@ -39,13 +39,13 @@ for k  = 1:5
 
                     currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));
                     mergedData{currentGestureIndex} = vertcat(mergedData{currentGestureIndex}, dataTable);
-                
+ 
              end
         end
     end
 end
 %Create the header array consisting of the sensor names
-fid = fopen(char(subDirPath+"/"+fileName),'r');
+fid = fopen(char(fileName),'r');
 headerline  = fgetl(fid);
 headers = textscan(headerline,'%s','Delimiter',',');
 fclose(fid);  
