@@ -138,28 +138,28 @@ for i=1:size((dwtStats),3)
     data_min=dwtStats(4,:,i);
     
     
-% %     hold on
-%     plot(data_mean,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
-% %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
-%     [~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
-%     hl = findobj(hobj,'type','line');
-%     set(hl,'LineWidth',2.5);
-%     ht = findobj(hobj,'type','text')
-%     set(ht,'FontSize',12);
-%     ylabel('Mean values');
-%     xlabel('Sensor names');
-%     title("mean of dwt");
-%     grid on
-%     path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_dwt";
-%     filename = "mean_dwt"+filesArray{i}(1:end-4)
-% % 	filename = "overlapped_mean_dwt"
-%     saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+%     hold on
+    plot(data_mean,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
+%     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
+    [~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
+    hl = findobj(hobj,'type','line');
+    set(hl,'LineWidth',2.5);
+    ht = findobj(hobj,'type','text')
+    set(ht,'FontSize',12);
+    ylabel('Mean values');
+    xlabel('Sensor names');
+    title("mean of dwt");
+    grid on
+    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_dwt";
+    filename = "mean_dwt"+filesArray{i}(1:end-4)
+% 	filename = "overlapped_mean_dwt"
+    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
     
 %     hold on
-%     plot(data_rms,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
+%     plot(data_rms);set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
-%     %[~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
-%     hl = findobj(hobj,'type','line');
+%     [~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
+% hl = findobj(hobj,'type','line');
 %     set(hl,'LineWidth',2.5);
 %     ht = findobj(hobj,'type','text')
 %     set(ht,'FontSize',12);
@@ -168,15 +168,14 @@ for i=1:size((dwtStats),3)
 %     title("rms of dwt");
 %     grid on
 %     path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"rms_dwt";
-%     %filename = "rms_dwt"+filesArray{i}(1:end-4)
+% %     filename = "rms_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_rms_dwt"
 %     saveas(gca, fullfile(char(path), char(filename)), 'jpeg'); 
- 
-
+%  
+% 
 %     hold on
-%     plot(data_max,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
+%     plot(data_max);set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
-%     %[~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
 %     hl = findobj(hobj,'type','line');
 %     set(hl,'LineWidth',2.5);
 %     ht = findobj(hobj,'type','text')
@@ -186,26 +185,25 @@ for i=1:size((dwtStats),3)
 %     title("max of dwt");
 %     grid on
 %     path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"max_dwt";
-%     %filename = "max_dwt"+filesArray{i}(1:end-4)
+% %     filename = "max_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_max_dwt"
 %     saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 %    
-    hold on
-    plot(data_min,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
-    [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
-    %[~, hobj, ~, ~] = legend({filesArray{i}(1:end-4)},'Fontsize',12,'Location','Northwest');
-    hl = findobj(hobj,'type','line');
-    set(hl,'LineWidth',2.5);
-    ht = findobj(hobj,'type','text')
-    set(ht,'FontSize',12);
-    ylabel('Min values');     
-    xlabel('Sensor names');
-    title("min of dwt");
-    grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"min_dwt";
-    %filename = "min_dwt"+filesArray{i}(1:end-4)
-	filename = "overlapped_min_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+%     hold on
+%     plot(data_min);set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
+%     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
+%     hl = findobj(hobj,'type','line');
+%     set(hl,'LineWidth',2.5);
+%     ht = findobj(hobj,'type','text')
+%     set(ht,'FontSize',12);
+%     ylabel('Min values');     
+%     xlabel('Sensor names');
+%     title("min of dwt");
+%     grid on
+%     path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"min_dwt";
+% % 	filename = "min_dwt"+filesArray{i}(1:end-4)
+% 	filename = "overlapped_min_dwt"
+%     saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
 end
 
 
