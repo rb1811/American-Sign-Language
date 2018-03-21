@@ -1,6 +1,6 @@
 clc
 clear
-path = uigetdir(pwd, 'Select Folder Containing your Data');
+path = char(pwd+"/output/");
 cd(path);
 files = dir(fullfile(path, '*.csv'));
 filesArray = {files.name};

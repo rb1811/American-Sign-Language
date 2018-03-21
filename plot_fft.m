@@ -1,5 +1,20 @@
 clc
 figure('units','normalized','outerposition',[0 0 1 1]);
+images_path = path+"/images";
+if exist(char(images_path), 'dir') == 0
+    mkdir(char(images_path));
+end
+meanacc_path = char(images_path+"/mean_acc");
+meangyro_path = char(images_path+"/mean_gyro");
+meanorie_path = char(images_path+"/mean_orie");
+rmsacc_path = char(images_path+"/rms_acc");
+rmsgyro_path = char(images_path+"/rms_gyro");
+rmsorie_path = char(images_path+"/rms_orie");
+stdacc_path = char(images_path+"/std_acc");
+stdgyro_path = char(images_path+"/std_gyro");
+stdorie_path = char(images_path+"/std_orie");
+
+
 for i = 1:length(fftStats)
 	meanacc = [];
 	rmsacc = [];
@@ -48,9 +63,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Mean Accelerometer');
     grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_acc";
-	filename = "mean_acc"+filesArray{i}(1:end-4)
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(meanacc_path, 'dir') == 0
+        mkdir(char(meanacc_path))
+    end
+    filename = "mean_acc"+filesArray{i}(1:end-4)
+    saveas(gca, fullfile(meanacc_path, char(filename)), 'jpeg');
 	
 
 	clf('reset')
@@ -62,9 +79,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Mean Gyroscope');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_gyro";
-	filename = "mean_gyro"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(meangyro_path, 'dir') == 0
+        mkdir(meangyro_path)
+    end
+    filename = "mean_gyro"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(meangyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
 	subplot(1,2,1); plot3(meanori(1,:),meanori(2,:),meanori(3,:)); title("Left Hand");
@@ -75,9 +94,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Mean Orientation');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_orie";
-	filename = "mean_orie"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(meanorie_path, 'dir') == 0
+        mkdir(meanorie_path)
+    end
+    filename = "mean_orie"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(meanorie_path, char(filename)), 'jpeg');
 	
 
 
@@ -90,9 +111,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('RMS Accelerometer');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"rms_acc";
-	filename = "rms_acc"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(rmsacc_path, 'dir') == 0
+        mkdir(rmsacc_path)
+    end
+    filename = "rms_acc"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(rmsacc_path, char(filename)), 'jpeg');
 	
 	clf('reset')
 	subplot(1,2,1); plot3(rmsgyro(1,:),rmsgyro(2,:),rmsgyro(3,:)); title("Left Hand");
@@ -103,9 +126,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('RMS Gyroscope');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"rms_gyro";
-	filename = "rms_gyro"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(rmsgyro_path, 'dir') == 0
+        mkdir(rmsgyro_path)
+    end
+    filename = "rms_gyro"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(rmsgyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
 	subplot(1,2,1); plot3(rmsori(1,:),rmsori(2,:),rmsori(3,:)); title("Left Hand");
@@ -116,9 +141,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('RMS Orientation');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"rms_orie";
+    if exist(rmsorie_path, 'dir') == 0
+        mkdir(rmsorie_path)
+    end
 	filename = "rms_orie"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+	saveas(gca, fullfile(rmsorie_path, char(filename)), 'jpeg');
 	
 
 	clf('reset')
@@ -130,9 +157,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Std Accelerometer');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"std_acc";
+    if exist(stdacc_path, 'dir') == 0
+        mkdir(stdacc_path)
+    end
 	filename = "std_acc"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+	saveas(gca, fullfile(stdacc_path, char(filename)), 'jpeg');
 	
 	clf('reset')
 	subplot(1,2,1); plot3(stdgyro(1,:),stdgyro(2,:),stdgyro(3,:)); title("Left Hand");
@@ -143,9 +172,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Std Gyroscope');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"std_gyro";
-	filename = "std_gyro"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(stdgyro_path, 'dir') == 0
+        mkdir(stdgyro_path)
+    end
+    filename = "std_gyro"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(stdgyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
 	subplot(1,2,1); plot3(stdori(1,:),stdori(2,:),stdori(3,:)); title("Left Hand");
@@ -156,9 +187,11 @@ for i = 1:length(fftStats)
 	h = rotate3d; 
     suptitle('Std Orientation');
 	grid on
-	path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"std_orie";
-	filename = "std_orie"+filesArray{i}(1:end-4)
-	saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    if exist(stdorie_path, 'dir') == 0
+        mkdir(stdorie_path)
+    end
+    filename = "std_orie"+filesArray{i}(1:end-4)
+	saveas(gca, fullfile(stdorie_path, char(filename)), 'jpeg');
 		
 end
 
