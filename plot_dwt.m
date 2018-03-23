@@ -1,5 +1,16 @@
 clc
 figure('units','normalized','outerposition',[0 0 1 1]);
+images_path = path+"/images";
+if exist(char(images_path), 'dir') == 0
+    mkdir(char(images_path));
+end
+maxdwt_path = images_path +  "/max_dwt";
+mindwt_path = images_path +  "/min_dwt";
+meandwt_path = images_path + "/mean_dwt";
+rmsdwt_path = images_path +  "/rms_dwt";
+stddwt_path = images_path +  "/std_dwt";
+
+
 SensorNames = {'ALX','ALY','ALZ','ARX','ARY','ARZ','EMG0L','EMG0R','EMG1L','EMG1R','EMG2L','EMG2R','EMG3L','EMG3R','EMG4L','EMG4R','EMG5L','EMG5R','EMG6L','EMG6R','EMG7L','EMG7R','GLX','GLY','GLZ','GRX','GRY','GRZ','OPL','OPR','ORL','ORR','OYL','OYR'};
 colorspec = {[0.9 0.3 0.9];[0.6 0.5 0.2];[0.9 0.8 0.1];[0.8 1 0];[0 1 1];[1 0 0];[0 1 0];[0 0 1]; [1 0.5 0.1];[0 0 0];};
 for i=1:size((dwtStats),3)
@@ -22,10 +33,12 @@ for i=1:size((dwtStats),3)
     xlabel('Sensor names');
     title("mean of dwt");
     grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"mean_dwt";
+    if exist(meandwt_path, 'dir') == 0
+        mkdir(char(meandwt_path))
+    end
     filename = "mean_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_mean_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    saveas(gca, fullfile(char(meandwt_path), char(filename)), 'jpeg');
     
 %     hold on
     plot(data_rms,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
@@ -39,10 +52,12 @@ for i=1:size((dwtStats),3)
     xlabel('Sensor names');
     title("rms of dwt");
     grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"rms_dwt";
+    if exist(rmsdwt_path, 'dir') == 0
+        mkdir(char(rmsdwt_path))
+    end
     filename = "rms_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_rms_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg'); 
+    saveas(gca, fullfile(char(rmsdwt_path), char(filename)), 'jpeg'); 
  
 
 %     hold on
@@ -57,10 +72,12 @@ for i=1:size((dwtStats),3)
     xlabel('Sensor names');
     title("max of dwt");
     grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"max_dwt";
+    if exist(maxdwt_path, 'dir') == 0
+        mkdir(char(maxdwt_path))
+    end
     filename = "max_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_max_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    saveas(gca, fullfile(char(maxdwt_path), char(filename)), 'jpeg');
    
 %     hold on
     plot(data_min,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
@@ -74,10 +91,12 @@ for i=1:size((dwtStats),3)
     xlabel('Sensor names');
     title("min of dwt");
     grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"min_dwt";
+    if exist(mindwt_path, 'dir') == 0
+        mkdir(char(mindwt_path))
+    end
     filename = "min_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_min_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    saveas(gca, fullfile(char(mindwt_path), char(filename)), 'jpeg');
     
     
 
@@ -93,8 +112,10 @@ for i=1:size((dwtStats),3)
     xlabel('Sensor names');
     title("std of dwt");
     grid on
-    path = "/home/srinija/Documents/MATLAB/American-Sign-Language/output/images/"+"std_dwt";
+    if exist(stddwt_path, 'dir') == 0
+        mkdir(char(stddwt_path))
+    end
     filename = "std_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_std_dwt"
-    saveas(gca, fullfile(char(path), char(filename)), 'jpeg');
+    saveas(gca, fullfile(char(stddwt_path), char(filename)), 'jpeg');
 end

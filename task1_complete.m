@@ -5,6 +5,7 @@ actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
 %initialize cell array to store data
 mergedData{10} = [];
+code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path)
 folders = dir(path);
@@ -53,7 +54,10 @@ fclose(fid);
 headers = cell2table(strsplit(headerline,","));
 headers = headers(:,1:34);
 %directory where the final 10 csv will be stores
-outputDirectory = uigetdir(pwd, 'Select Destination folder to write files');
+outputDirectory = char(code_path + "/output")
+if exist(outputDirectory, 'dir') == 0
+    mkdir(char(outputDirectory))
+end
 cd(outputDirectory);
 for key = keys(mapObj)
     currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));       
