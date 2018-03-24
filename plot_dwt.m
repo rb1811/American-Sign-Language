@@ -20,7 +20,6 @@ for i=1:size((dwtStats),3)
     data_max=dwtStats(4,:,i);
     data_min=dwtStats(5,:,i);
     
-    
 %     hold on
     plot(data_mean,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
@@ -39,7 +38,7 @@ for i=1:size((dwtStats),3)
     filename = "mean_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_mean_dwt"
     saveas(gca, fullfile(char(meandwt_path), char(filename)), 'jpeg');
-%     
+     
 %     hold on
     plot(data_rms,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
@@ -58,8 +57,8 @@ for i=1:size((dwtStats),3)
     filename = "rms_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_rms_dwt"
     saveas(gca, fullfile(char(rmsdwt_path), char(filename)), 'jpeg'); 
-%  
-
+  
+ 
 %     hold on
     plot(data_max,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');
@@ -78,7 +77,7 @@ for i=1:size((dwtStats),3)
     filename = "max_dwt"+filesArray{i}(1:end-4)
 % 	filename = "overlapped_max_dwt"
     saveas(gca, fullfile(char(maxdwt_path), char(filename)), 'jpeg');
-%    
+     
 %     hold on
     plot(data_min,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','southwest');
@@ -98,8 +97,8 @@ for i=1:size((dwtStats),3)
 % 	filename = "overlapped_min_dwt"
     saveas(gca, fullfile(char(mindwt_path), char(filename)), 'jpeg');
     
-    
-
+     
+ 
 %     hold on
     plot(data_std,'Color', colorspec{i});set(gca,'XTick',1:34,'XTickLabel',SensorNames);xtickangle(-45);
 %     [~, hobj, ~, ~] = legend({'ABOUT','AND','CAN','COP','DEAF', 'DECIDE', 'FATHER', 'FIND', 'GO OUT', 'HEARING'},'Fontsize',12,'Location','Northwest');

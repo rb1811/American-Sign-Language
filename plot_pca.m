@@ -29,7 +29,7 @@ for i = 1:num_components
     set(ht,'FontSize',12);
     ylabel('latent DWT values');
     xlabel('Sensor names');
-    title("PCA Output");
+    title("PCA Output "+i);
     grid on
 
    end
