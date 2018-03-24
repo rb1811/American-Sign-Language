@@ -15,6 +15,7 @@ num_components = 3;
         components{l} = coeff(:,l:l);
     end
     pca_output{k} = components;
-end
+ end
+disp('done')
 
 

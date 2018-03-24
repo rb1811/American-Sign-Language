@@ -23,9 +23,13 @@ for k  = 1:length(nameFolds)
         for key = keys(mapObj)
             %skip the files/Gestures that are not there in the above list
              if contains(cellstr(lower(fileName(1))),cellstr(lower(key(1))))             
-                 fileName = char(subDirPath+"/"+fileName);
+                fileSize = dir(fullfile(char(subDirPath),fileName{1}));
+                 if(fileSize.bytes < 20*1024)
+                   continue; 
+                 end
+                 readfileName = char(subDirPath+"/"+fileName)
 
-                 T = readtable(fileName);
+                 T = readtable(readfileName);
                  %Skip the files if the  time series data for the action is
                  %more than 55
                  if height(T)>55
@@ -45,7 +49,7 @@ for k  = 1:length(nameFolds)
     end
 end
 %Create the header array consisting of the sensor names
-fid = fopen(char(fileName),'r');
+fid = fopen(char(readfileName),'r');
 headerline  = fgetl(fid);
 headers = textscan(headerline,'%s','Delimiter',',');
 fclose(fid);  

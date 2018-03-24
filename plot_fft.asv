@@ -55,10 +55,10 @@ for i = 1:length(fftStats)
 	end
 
 
-	subplot(1,2,1); plot3(meanacc(1,:),meanacc(2,:),meanacc(3,:)); title("Left Hand accelerometer"); 
+	subplot(1,2,1); plot3(meanacc(1,:),meanacc(2,:),meanacc(3,:)); title("Left Hand accerlerometer"); 
     xlabel('Mean ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Mean ALZ');
 	grid on	
-	subplot(1,2,2); plot3(meanacc(4,:),meanacc(5,:),meanacc(6,:)); title("Right Hand accelerometer");
+	subplot(1,2,2); plot3(meanacc(4,:),meanacc(5,:),meanacc(6,:)); title("Right Hand");
     xlabel('Mean ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Mean ARZ');
 	h = rotate3d; 
     grid on
@@ -70,10 +70,10 @@ for i = 1:length(fftStats)
 	
 
 	clf('reset')
-	subplot(1,2,1); plot3(meangyro(1,:),meangyro(2,:),meangyro(3,:)); title("Left Hand Gyroscope");
+	subplot(1,2,1); plot3(meangyro(1,:),meangyro(2,:),meangyro(3,:)); title("Left Hand");
     xlabel('Mean ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Mean ALZ');
 	grid on
-	subplot(1,2,2); plot3(meangyro(4,:),meangyro(5,:),meangyro(6,:)); title("Right Hand Gyroscope");
+	subplot(1,2,2); plot3(meangyro(4,:),meangyro(5,:),meangyro(6,:)); title("Right Hand");
     xlabel('Mean ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Mean ARZ');
 	h = rotate3d; 
     grid on
@@ -84,10 +84,10 @@ for i = 1:length(fftStats)
 	saveas(gca, fullfile(meangyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
-	subplot(1,2,1); plot3(meanori(1,:),meanori(2,:),meanori(3,:)); title("Left Hand Orientation");
+	subplot(1,2,1); plot3(meanori(1,:),meanori(2,:),meanori(3,:)); title("Left Hand");
     xlabel('Mean ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Mean ALZ');
 	grid on
-	subplot(1,2,2); plot3(meanori(4,:),meanori(5,:),meanori(6,:)); title("Right Hand Orientation");
+	subplot(1,2,2); plot3(meanori(4,:),meanori(5,:),meanori(6,:)); title("Right Hand");
     xlabel('Mean ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Mean ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Mean ARZ');
 	h = rotate3d; 
     grid on
@@ -100,10 +100,10 @@ for i = 1:length(fftStats)
 
 
 	clf('reset')
-	subplot(1,2,1); plot3(rmsacc(1,:),rmsacc(2,:),rmsacc(3,:)); title("Left Hand Accelerometer");
+	subplot(1,2,1); plot3(rmsacc(1,:),rmsacc(2,:),rmsacc(3,:)); title("Left Hand");
     xlabel('RMS ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('RMS ALZ');
 	grid on	
-	subplot(1,2,2); plot3(rmsacc(4,:),rmsacc(5,:),rmsacc(6,:)); title("Right Hand Accelerometer");
+	subplot(1,2,2); plot3(rmsacc(4,:),rmsacc(5,:),rmsacc(6,:)); title("Right Hand");
     xlabel('RMS ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('RMS ARZ');
 	h = rotate3d; 
     grid on
@@ -114,10 +114,10 @@ for i = 1:length(fftStats)
 	saveas(gca, fullfile(rmsacc_path, char(filename)), 'jpeg');
 	
 	clf('reset')
-	subplot(1,2,1); plot3(rmsgyro(1,:),rmsgyro(2,:),rmsgyro(3,:)); title("Left Hand Gyroscope");
+	subplot(1,2,1); plot3(rmsgyro(1,:),rmsgyro(2,:),rmsgyro(3,:)); title("Left Hand");
     xlabel('RMS ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('RMS ALZ');
 	grid on
-	subplot(1,2,2); plot3(rmsgyro(4,:),rmsgyro(5,:),rmsgyro(6,:)); title("Right Hand Gyroscope");
+	subplot(1,2,2); plot3(rmsgyro(4,:),rmsgyro(5,:),rmsgyro(6,:)); title("Right Hand");
     xlabel('RMS ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('RMS ARZ');
 	h = rotate3d; 
    
@@ -129,10 +129,10 @@ for i = 1:length(fftStats)
 	saveas(gca, fullfile(rmsgyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
-	subplot(1,2,1); plot3(rmsori(1,:),rmsori(2,:),rmsori(3,:)); title("Left Hand Orientation");
+	subplot(1,2,1); plot3(rmsori(1,:),rmsori(2,:),rmsori(3,:)); title("Left Hand");
     xlabel('RMS ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('RMS ALZ');
 	grid on
-	subplot(1,2,2); plot3(rmsori(4,:),rmsori(5,:),rmsori(6,:)); title("Right Hand Orientation");
+	subplot(1,2,2); plot3(rmsori(4,:),rmsori(5,:),rmsori(6,:)); title("Right Hand");
     xlabel('RMS ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('RMS ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('RMS ARZ');
 	h = rotate3d; 
     
@@ -145,10 +145,10 @@ for i = 1:length(fftStats)
 	
 
 	clf('reset')
-	subplot(1,2,1); plot3(stdacc(1,:),stdacc(2,:),stdacc(3,:)); title("Left Hand Accelerometer");
+	subplot(1,2,1); plot3(stdacc(1,:),stdacc(2,:),stdacc(3,:)); title("Left Hand");
     xlabel('Std ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Std ALZ');
 	grid on	
-	subplot(1,2,2); plot3(stdacc(4,:),stdacc(5,:),stdacc(6,:)); title("Right Hand Accelerometer");
+	subplot(1,2,2); plot3(stdacc(4,:),stdacc(5,:),stdacc(6,:)); title("Right Hand");
     xlabel('Std ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Std ARZ');
 	h = rotate3d; 
    
@@ -160,10 +160,10 @@ for i = 1:length(fftStats)
 	saveas(gca, fullfile(stdacc_path, char(filename)), 'jpeg');
 	
 	clf('reset')
-	subplot(1,2,1); plot3(stdgyro(1,:),stdgyro(2,:),stdgyro(3,:)); title("Left Hand Gyroscope");
+	subplot(1,2,1); plot3(stdgyro(1,:),stdgyro(2,:),stdgyro(3,:)); title("Left Hand");
     xlabel('Std ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Std ALZ');
 	grid on
-	subplot(1,2,2); plot3(stdgyro(4,:),stdgyro(5,:),stdgyro(6,:)); title("Right Hand Gyroscope");
+	subplot(1,2,2); plot3(stdgyro(4,:),stdgyro(5,:),stdgyro(6,:)); title("Right Hand");
     xlabel('Std ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Std ARZ');
 	h = rotate3d; 
     
@@ -175,10 +175,10 @@ for i = 1:length(fftStats)
 	saveas(gca, fullfile(stdgyro_path, char(filename)), 'jpeg');
 	
 	clf('reset')
-	subplot(1,2,1); plot3(stdori(1,:),stdori(2,:),stdori(3,:)); title("Left Hand Orientation");
+	subplot(1,2,1); plot3(stdori(1,:),stdori(2,:),stdori(3,:)); title("Left Hand");
     xlabel('Std ALX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ALY'); set(get(gca,'ylabel'),'rotation',-40); zlabel('Std ALZ');
 	grid on
-	subplot(1,2,2); plot3(stdori(4,:),stdori(5,:),stdori(6,:)); title("Right Hand Orientation");
+	subplot(1,2,2); plot3(stdori(4,:),stdori(5,:),stdori(6,:)); title("Right Hand");
     xlabel('Std ARX'); set(get(gca,'xlabel'),'rotation',32); ylabel('Std ARY'); set(get(gca,'ylabel'),'rotation',-40);zlabel('Std ARZ');
 	h = rotate3d; 
     grid on
