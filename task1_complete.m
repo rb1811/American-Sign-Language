@@ -15,8 +15,7 @@ nameFolds = {folders(isub).name}';
 %recursive file reading
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
 for k  = 1:length(nameFolds)
-    %We are working with first 5 folders. Change the number to
-    %length(nameFolds) to make it work for all sub folders.
+    %Change the number to length(nameFolds) to make it work for all sub folders.
     subDirPath = char(path+"/"+nameFolds{k})
     files = dir(fullfile(subDirPath, '*.csv'));
     filesArray = {files.name};
@@ -83,4 +82,4 @@ for key = keys(mapObj)
 end
 
 disp("done")
-clear
+% clear

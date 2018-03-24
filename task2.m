@@ -1,6 +1,6 @@
 clc
 clear
-path = char(pwd+"/output/");
+path = char(pwd+"/output/")
 cd(path);
 files = dir(fullfile(path, '*.csv'));
 filesArray = {files.name};
