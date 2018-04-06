@@ -4,10 +4,12 @@ diary('asst.txt')
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
+
 firstFile =  true;
 wname = 'db1';
 [Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname); 
-newFeatures={};
+finalData={};
+
 code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path)
@@ -15,7 +17,8 @@ folders = dir(path);
 isub = [folders(:).isdir];
 nameFolds = {folders(isub).name}';
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
-for k  = 21:36
+
+for k  = 1:36
     mergedData{10} = [];
     subDirPath = char(path+"/"+nameFolds{k})
     files = dir(fullfile(subDirPath, '*.csv'));
@@ -33,11 +36,7 @@ for k  = 21:36
             fileNameCopy(~ismember(double( fileNameCopy),[65:90 97:122])) = '';
             keyCopy(~ismember(double(keyCopy),[65:90 97:122])) = '';
 
-            % disp(fileNameCopy(find(~isspace(fileNameCopy))))
-%             disp(keyCopy(find(~isspace(keyCopy))))
-%             disp(contains(fileNameCopy(find(~isspace(fileNameCopy))),keyCopy(find(~isspace(keyCopy)))))
             if contains(fileNameCopy,keyCopy) 
-%             if contains(lower(fileName(1)),lower(key(1)))
                 fileSize = dir(fullfile(char(subDirPath),fileName{1}));
                 if(fileSize.bytes < 20*1024)
                     continue; 
@@ -51,7 +50,6 @@ for k  = 21:36
                     fclose(fid);  
                     headers = cell2table(strsplit(headerline,","));
                     headers = headers(:,1:34);
-                    
                     firstFile = false;
                 end
 
@@ -75,7 +73,6 @@ for k  = 21:36
     if size(mergedData,2) < 10
         continue;
     end    
-%     tempData = mergedData
     for key = keys(mapObj)
         currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));       
         n = height(mergedData{currentGestureIndex})/34;
@@ -117,6 +114,7 @@ for k  = 21:36
         allGestures{p} = currentGesture;
     end
     disp('DWT start')
+    newFeatures = [];
     for gesture = 1:length(allGestures)
         dwtStats= [];
         msg = "Gesture "+ num2str(gesture(1))+" of Folder"+ nameFolds{k}+ " is being done,wait";
@@ -134,8 +132,9 @@ for k  = 21:36
             dwtStats(5,sensor) = min(approx); 
         end
         [coeff,score,latent]  = pca(dwtStats);  
+        newFeatures(:,:,gesture) = dwtStats*coeff;
     end
-    newFeatures{:,:,gesture} = dwtStats*coeff;
+    finalData{end+1} = newFeatures; 
     clear mergedData
 end
-diary off
+disp("done")
