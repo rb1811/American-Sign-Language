@@ -14,7 +14,7 @@ for i = 1:num_components
    
    for j = 1:length(pca_output)
        y(:,j) = pca_output{1,j}{1,i};
-        
+z        
    end
    figure(i); cla;
     

@@ -4,7 +4,7 @@ gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'G
 actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
 %initialize cell array to store data
-mergedData{10} = [];
+mergedData{10} = [];%%%%%%%%%%%%%%%%%%%%%%%%%%
 code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path)
@@ -27,8 +27,8 @@ for k  = 1:length(nameFolds)
                  if(fileSize.bytes < 20*1024)
                    continue; 
                  end
-                 readfileName = char(subDirPath+"/"+fileName)
-
+                 readfileName = char(subDirPath+"/"+fileName);
+                    
                  T = readtable(readfileName);
                  %Skip the files if the  time series data for the action is
                  %more than 55
@@ -46,7 +46,7 @@ for k  = 1:length(nameFolds)
  
              end
         end
-    end
+    end%%%%%%%%%%%%%%%%%%%%%%%%%%%
 end
 %Create the header array consisting of the sensor names
 fid = fopen(char(readfileName),'r');
