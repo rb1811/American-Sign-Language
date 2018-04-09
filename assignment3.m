@@ -1,6 +1,5 @@
 clear
 clc   
-diary('asst.txt')
 gestures =   {'ABOUT', 'AND', 'CAN', 'COP', 'DEAF','DECIDE','FATHER', 'FIND', 'GO OUT', 'HEARING'};
 actions = [1,1,1,1,1,1,1,1,1,1];
 mapObj = containers.Map(gestures,actions);
@@ -68,11 +67,27 @@ for k  = 1:36
              end
         end
     end
-    emptyCells = cellfun(@isempty,mergedData);
-    mergedData(emptyCells) = [];
-    if size(mergedData,2) < 10
-        continue;
-    end    
+    
+%     emptyCells = cellfun(@isempty,mergedData);
+%     mergedData(emptyCells) = [];
+%     if size(mergedData,2) < 10 
+%         disp("skipping folders, inconsistency betweeen gestures")
+%         clearvars mergedData
+%         continue
+%     end
+    instanceFail = false;
+    for i = 1:length(mergedData)
+        if size(mergedData{i},1)/34 < 10
+            instanceFail = true;
+            break;
+        end
+    end
+    if instanceFail
+        disp("skipping folders, inconsistency betweeen gestures")
+        clearvars mergedData
+        continue
+    end
+
     for key = keys(mapObj)
         currentGestureIndex =  find(not(cellfun('isempty', strfind(gestures,char(key)))));       
         n = height(mergedData{currentGestureIndex})/34;
@@ -93,6 +108,7 @@ for k  = 1:36
         headersTable.Properties.VariableNames=columnNames;
         mergedData{currentGestureIndex} = horzcat(headersTable,mergedData{currentGestureIndex});
     end
+    
     allGestures = {};
     for p = 1:length(mergedData)
         T=mergedData{p};
@@ -113,28 +129,97 @@ for k  = 1:36
         end
         allGestures{p} = currentGesture;
     end
-    disp('DWT start')
-    newFeatures = [];
+    
+    disp('DWT and PCA start')
+    newFeatures = {};
     for gesture = 1:length(allGestures)
-        dwtStats= [];
-        msg = "Gesture "+ num2str(gesture(1))+" of Folder"+ nameFolds{k}+ " is being done,wait";
+        msg = "Gesture "+ num2str(gesture(1))+" of Folder "+ nameFolds{k}+ " is being done,wait";
         disp(char(msg))
+        currentGesture = [];
         for sensor = 1:size(allGestures{gesture},3)
-            approx = [];
-            for action = 1:size(allGestures{gesture}(:,:,sensor),1) 
-                [c,l] = wavedec(allGestures{gesture}(action,:,sensor),6,Lo_D,Hi_D);
-                approx(action) = appcoef(c,l,wname);
+            currentSensor = [];
+            for action = 1:size(allGestures{gesture}(:,:,sensor),1)
+                [c,l] = wavedec(allGestures{gesture}(action,:,sensor),3,Lo_D,Hi_D);
+                currentSensor = vertcat(currentSensor,appcoef(c,l,wname));
             end
-            dwtStats(1,sensor) = mean(approx);
-            dwtStats(2,sensor) = rms(approx);
-            dwtStats(3,sensor) = std(approx);
-            dwtStats(4,sensor) = max(approx);
-            dwtStats(5,sensor) = min(approx); 
+            currentGesture(:,:,sensor) = currentSensor;
         end
-        [coeff,score,latent]  = pca(dwtStats);  
-        newFeatures(:,:,gesture) = dwtStats*coeff;
+        
+        %PCA starts
+        pcaInput = horzcat(currentGesture(:,:,23),currentGesture(:,:,24),currentGesture(:,:,25),currentGesture(:,:,26),currentGesture(:,:,27),currentGesture(:,:,28));
+        [coeff,score,latent] = pca(pcaInput, 'NumComponents', 9);
+        newFeatures{end+1} = pcaInput*coeff;
     end
+
     finalData{end+1} = newFeatures; 
-    clear mergedData
+    mergedData;
+    clearvars mergedData
+    clearvars allGestures
+
+end
+
+traincsv{10} = [];
+testcsv{10} = [];
+
+for user = 1:size(finalData,2)
+    for gesture = 1:size(finalData{user},2)    
+        %needs reset for every new gesture
+        trainGesture = [];
+        testGesture = [];
+        
+        class = finalData{user}{gesture};
+        nonClass = {finalData{user}{1:end ~= gesture}};
+        
+        %training data
+        splitSixty = floor(0.6*size(class,1));
+        trainPos = repmat({'+'},splitSixty,1);
+        tempTrainData = [num2cell(class(1:splitSixty,:)) trainPos];
+        trainGesture = vertcat(trainGesture, tempTrainData);
+        
+        for otherGesture = 1:length(nonClass)
+            splitForty = floor(0.4*size(nonClass{otherGesture},1));
+            trainNeg = repmat({'-'},splitForty,1);
+            tempTrainData = [num2cell(nonClass{otherGesture}(1:splitForty,:)) trainNeg];
+            trainGesture = vertcat(trainGesture, tempTrainData);
+        end
+        
+        %testing data
+        splitSixty = floor(0.6*size(class,1));
+        testPos  = repmat({'+'},size(class,1)-splitSixty,1);
+        tempTestData = [num2cell(class(splitSixty+1:end,:)) testPos];
+        testGesture = vertcat(testGesture, tempTestData);
+        
+        for otherGesture = 1:length(nonClass)
+            splitForty = floor(0.4*size(nonClass{otherGesture},1));
+            testNeg  = repmat({'-'},size(nonClass{otherGesture},1)-splitForty,1);
+            tempTestData = [num2cell(nonClass{otherGesture}(splitForty+1:end,:)) testNeg];
+            testGesture = vertcat(testGesture, tempTestData);
+        end
+                
+        %After one gesture is done
+        traincsv{gesture} = vertcat(traincsv{gesture}, trainGesture);
+        testcsv{gesture} = vertcat(testcsv{gesture}, testGesture);
+
+    end
+end
+
+cd(code_path)
+trainCsvPath = char(code_path+"/output/"+"trainCsv");
+testCsvPath = char(code_path+"/output/"+"testCsv");
+if exist(trainCsvPath, 'dir') == 0
+        mkdir(trainCsvPath)
+end
+if exist(testCsvPath, 'dir') == 0
+        mkdir(testCsvPath)
+end
+
+for i = 1:length(gestures)
+    filename = char("train_"+ gestures{i} + ".csv");
+    cell2csv(filename,traincsv{i});
+    movefile(filename, trainCsvPath);
+    
+    filename = char("test_"+ gestures{i} + ".csv");
+    cell2csv(filename,testcsv{i});
+    movefile(filename, testCsvPath);
 end
 disp("done")

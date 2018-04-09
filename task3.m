@@ -2,7 +2,7 @@ clc
 pca_input={};
 pca_output={};
 newFeatures = {};
-newFnum_components = 3;
+num_components = 3;
 for k = 1 : length(allGestures)
    [coeff,score,latent]  = pca(dwtStats(:,:,k));
    newFeatures{k} = dwtStats(:,:,k)*coeff;  
