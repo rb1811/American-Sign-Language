@@ -9,6 +9,7 @@ wname = 'db1';
 [Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname); 
 finalData={};
 
+
 code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
 cd(path)
@@ -17,6 +18,21 @@ isub = [folders(:).isdir];
 nameFolds = {folders(isub).name}';
 nameFolds(ismember(nameFolds,{'.','..'})) = [];
 
+nnPath = char(code_path+"/output/"+"NN");
+trainCsvPath = char(code_path+"/output/"+"trainCombineCsv");
+testCsvPath = char(code_path+"/output/"+"testCombinCsv");
+
+if exist(nnPath, 'dir') == 0
+        mkderir(nnPath)
+end
+if exist(trainCsvPath, 'dir') == 0
+        mkdir(trainCsvPath)
+end
+if exist(testCsvPath, 'dir') == 0
+        mkdir(testCsvPath)
+end
+
+    
 for k  = 1:36
     mergedData{10} = [];
     subDirPath = char(path+"/"+nameFolds{k})
@@ -67,14 +83,7 @@ for k  = 1:36
              end
         end
     end
-    
-%     emptyCells = cellfun(@isempty,mergedData);
-%     mergedData(emptyCells) = [];
-%     if size(mergedData,2) < 10 
-%         disp("skipping folders, inconsistency betweeen gestures")
-%         clearvars mergedData
-%         continue
-%     end
+
     instanceFail = false;
     for i = 1:length(mergedData)
         if size(mergedData{i},1)/34 < 10
@@ -152,16 +161,40 @@ for k  = 1:36
     end
 
     finalData{end+1} = newFeatures; 
-    mergedData;
+    
+    %for NN user dependent CSV files
+    NN = [];
+    for gesture = 1:length(finalData{end})
+        classLabel = repmat({gestures{gesture}},size(finalData{end}{gesture},1),1);
+        NN = vertcat(NN,[num2cell(finalData{end}{gesture}) classLabel]);       
+    end
+    
+    % saving the neural csv data'
+%     columnNames = {'fea1','fea2','fea3','fea4','fea5','fea6','fea7','fea8','fea9','class'};
+%     NN = cell2table(NN);
+%     NN.Properties.VariableNames=columnNames;
+    cd(code_path)
+    fileName  = char(subDirPath(end-3:end)+".csv");
+    cell2csv(fileName, NN);
+    movefile(fileName, nnPath);
+
     clearvars mergedData
     clearvars allGestures
-
 end
+
+
+cd(code_path)
 
 traincsv{10} = [];
 testcsv{10} = [];
 
 for user = 1:size(finalData,2)
+    %declare a folder per user for storing the csv files
+    userCsvPath = char(code_path+"/output/CSV/DM"+num2str(user));
+    if exist(userCsvPath, 'dir') == 0
+        mkdir(userCsvPath)
+    end
+    
     for gesture = 1:size(finalData{user},2)    
         %needs reset for every new gesture
         trainGesture = [];
@@ -177,16 +210,16 @@ for user = 1:size(finalData,2)
         trainGesture = vertcat(trainGesture, tempTrainData);
         
         for otherGesture = 1:length(nonClass)
-            splitForty = floor(0.4*size(nonClass{otherGesture},1));
-            trainNeg = repmat({'-'},splitForty,1);
-            tempTrainData = [num2cell(nonClass{otherGesture}(1:splitForty,:)) trainNeg];
+            splitSixty = floor(0.6*size(nonClass{otherGesture},1));
+            trainNeg = repmat({'-'},splitSixty,1);
+            tempTrainData = [num2cell(nonClass{otherGesture}(1:splitSixty,:)) trainNeg];
             trainGesture = vertcat(trainGesture, tempTrainData);
         end
         
         %testing data
-        splitSixty = floor(0.6*size(class,1));
-        testPos  = repmat({'+'},size(class,1)-splitSixty,1);
-        tempTestData = [num2cell(class(splitSixty+1:end,:)) testPos];
+        splitForty = floor(0.4*size(class,1));
+        testPos  = repmat({'+'},size(class,1)-splitForty,1);
+        tempTestData = [num2cell(class(splitForty+1:end,:)) testPos];
         testGesture = vertcat(testGesture, tempTestData);
         
         for otherGesture = 1:length(nonClass)
@@ -195,7 +228,21 @@ for user = 1:size(finalData,2)
             tempTestData = [num2cell(nonClass{otherGesture}(splitForty+1:end,:)) testNeg];
             testGesture = vertcat(testGesture, tempTestData);
         end
-                
+        
+        %Storing the files assuming you need only one file for machine
+        fileName = char(gestures{gesture}+".csv");
+        cell2csv(fileName, vertcat(trainGesture, testGesture));
+        movefile(fileName, userCsvPath);
+        
+        %stoing the file assuming you need separate files for train & test
+        trainFileName = char(gestures{gesture}+"_train"+".csv");
+        testFileName = char(gestures{gesture}+"_test"+".csv");
+        cell2csv(trainFileName, trainGesture);
+        movefile(trainFileName, userCsvPath);
+        cell2csv(testFileName, testGesture);
+        movefile(testFileName, userCsvPath);
+        
+        
         %After one gesture is done
         traincsv{gesture} = vertcat(traincsv{gesture}, trainGesture);
         testcsv{gesture} = vertcat(testcsv{gesture}, testGesture);
@@ -203,15 +250,9 @@ for user = 1:size(finalData,2)
     end
 end
 
-cd(code_path)
-trainCsvPath = char(code_path+"/output/"+"trainCsv");
-testCsvPath = char(code_path+"/output/"+"testCsv");
-if exist(trainCsvPath, 'dir') == 0
-        mkdir(trainCsvPath)
-end
-if exist(testCsvPath, 'dir') == 0
-        mkdir(testCsvPath)
-end
+%________________________________________
+%Combined CSV files for all users. Not needed anywhere but still creating
+%________________________________________
 
 for i = 1:length(gestures)
     filename = char("train_"+ gestures{i} + ".csv");
@@ -222,4 +263,5 @@ for i = 1:length(gestures)
     cell2csv(filename,testcsv{i});
     movefile(filename, testCsvPath);
 end
+
 disp("done")
