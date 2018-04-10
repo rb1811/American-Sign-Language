@@ -8,7 +8,7 @@ firstFile =  true;
 wname = 'db1';
 [Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname); 
 finalData={};
-
+NNall = [];
 
 code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
@@ -166,7 +166,9 @@ for k  = 1:36
     NN = [];
     for gesture = 1:length(finalData{end})
         classLabel = repmat({gestures{gesture}},size(finalData{end}{gesture},1),1);
-        NN = vertcat(NN,[num2cell(finalData{end}{gesture}) classLabel]);       
+        NN = vertcat(NN,[num2cell(finalData{end}{gesture}) classLabel]);
+        NNall = vertcat(NNall,[num2cell(finalData{end}{gesture}) classLabel]);
+   
     end
     
     % saving the neural csv data'
@@ -184,7 +186,9 @@ end
 
 
 cd(code_path)
-
+fileName  = char("neuraldata"+".csv");
+cell2csv(fileName, NNall);
+movefile(fileName, nnPath);
 traincsv{10} = [];
 testcsv{10} = [];
 
@@ -205,26 +209,26 @@ for user = 1:size(finalData,2)
         
         %training data
         splitSixty = floor(0.6*size(class,1));
-        trainPos = repmat({'+'},splitSixty,1);
+        trainPos = repmat({1},splitSixty,1);
         tempTrainData = [num2cell(class(1:splitSixty,:)) trainPos];
         trainGesture = vertcat(trainGesture, tempTrainData);
         
         for otherGesture = 1:length(nonClass)
             splitSixty = floor(0.6*size(nonClass{otherGesture},1));
-            trainNeg = repmat({'-'},splitSixty,1);
+            trainNeg = repmat({0},splitSixty,1);
             tempTrainData = [num2cell(nonClass{otherGesture}(1:splitSixty,:)) trainNeg];
             trainGesture = vertcat(trainGesture, tempTrainData);
         end
         
         %testing data
         splitForty = floor(0.4*size(class,1));
-        testPos  = repmat({'+'},size(class,1)-splitForty,1);
+        testPos  = repmat({1},size(class,1)-splitForty,1);
         tempTestData = [num2cell(class(splitForty+1:end,:)) testPos];
         testGesture = vertcat(testGesture, tempTestData);
         
         for otherGesture = 1:length(nonClass)
             splitForty = floor(0.4*size(nonClass{otherGesture},1));
-            testNeg  = repmat({'-'},size(nonClass{otherGesture},1)-splitForty,1);
+            testNeg  = repmat({0},size(nonClass{otherGesture},1)-splitForty,1);
             tempTestData = [num2cell(nonClass{otherGesture}(splitForty+1:end,:)) testNeg];
             testGesture = vertcat(testGesture, tempTestData);
         end
