@@ -1,17 +1,20 @@
+clc
 diary 'classifierOutputStats'
 disp("Decision Tree model");
-
+code_path =  pwd;
 warning('off','all')
-DecisionTreeStats = array2table(zeros(0,5));
-DecisionTreeStats.Properties.VariableNames = {'user','gesture','precision','recall','f_score'};
+DecisionTreeStats = [];
+columnNames = {'user','gesture','precision','recall','f_score'};
+subcolNames= {'precision','recall','f_score'};
 gestureMeans = array2table(zeros(0,3));
 gestureMeans.Properties.VariableNames = {'precision','recall','f_score'};
 userMeans = array2table(zeros(0,3));
 userMeans.Properties.VariableNames = {'precision','recall','f_score'};
 i=1;
 start=1;
-
-for user = 1:size(finalData,2)
+iter=1;
+userfilesList = dir(char(code_path+"/output/CSV"));
+for user = 1:length(userfilesList)-2
     
     
     %declare a folder per user for storing the csv files
@@ -28,10 +31,11 @@ for user = 1:size(finalData,2)
             iter=iter+1;
     end
     iter=1;
-    
+   
     for fileName = TestfilesArray
-            DecisionTreeStats.('user')(i)= user;
-            DecisionTreeStats.('gesture')(i) = iter;
+            stats=[];
+            stats = horzcat(stats,user);
+            stats = horzcat(stats,iter);
             Test = readtable(userCsvPath+"/"+fileName{1});
             TestArray = table2array(Test);
             lbls = predict(Models{iter},TestArray(:,1:9));
@@ -47,22 +51,40 @@ for user = 1:size(finalData,2)
             Recall=sum(recall)/size(confMat,1);
             Precision=sum(precision)/size(confMat,1);
             F_score=2*Recall*Precision/(Precision+Recall);
-            DecisionTreeStats.('recall')(i) = Recall;
-            DecisionTreeStats.('precision')(i) = Precision;
-            DecisionTreeStats.('f_score')(i) = F_score;
+            stats = horzcat(stats,Recall);
+            stats = horzcat(stats,Precision);
+            stats = horzcat(stats,F_score);
             iter=iter+1;
             i=i+1;
+            DecisionTreeStats = vertcat(DecisionTreeStats,stats);
     end
-   userMeans.('precision')(user) = mean(table2array(DecisionTreeStats(start:start+9,3:3)),1);
-   userMeans.('recall')(user) = mean(table2array(DecisionTreeStats(start:start+9,4:4)),1);
-   userMeans.('f_score')(user) = mean(table2array(DecisionTreeStats(start:start+9,5:5)),1);
+
+end
+DecisionTreeStats  = array2table(DecisionTreeStats);
+DecisionTreeStats.Properties.VariableNames = columnNames;
+start=1;
+userMeans=[];
+ for user = 1:length(userfilesList)-2
+     stats=[];
+     stats = horzcat(stats,mean(table2array(DecisionTreeStats(start:start+9,3:3)),1));
+     stats = horzcat(stats,mean(table2array(DecisionTreeStats(start:start+9,4:4)),1));
+     stats = horzcat(stats,mean(table2array(DecisionTreeStats(start:start+9,5:5)),1));
+     userMeans = vertcat(userMeans,stats);
    start=start+10;
-end
+ end
+userMeans  = array2table(userMeans);
+userMeans.Properties.VariableNames = subcolNames;
+gestureMeans=[];
 for i=1:iter-1
-    gestureMeans.('precision')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,3:3)),1);
-    gestureMeans.('recall')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,4:4)),1);
-    gestureMeans.('f_score')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,5:5)),1);
+      stats=[];
+     stats = horzcat(stats,mean(table2array(DecisionTreeStats(DecisionTreeStats.('gesture')==i,3:3)),1));
+     stats = horzcat(stats,mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,4:4)),1));
+     stats = horzcat(stats,mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,5:5)),1));
+     gestureMeans = vertcat(gestureMeans,stats);
+   
 end
+gestureMeans  = array2table(gestureMeans);
+gestureMeans.Properties.VariableNames = subcolNames;
   
     disp(DecisionTreeStats);
     disp("Mean Stats for all Users")
@@ -70,21 +92,22 @@ end
     disp("Mean Stats for all Gestures");
     disp(gestureMeans);
     
-
-  
+ 
 disp("SVM model");
-
+SVMStats=[];
 warning('off','all')
-SVMStats = array2table(zeros(0,5));
-SVMStats.Properties.VariableNames = {'user','gesture','precision','recall','f_score'};
+columnNames = {'user','gesture','precision','recall','f_score'};
+subcolNames= {'precision','recall','f_score'};
 gestureMeans = array2table(zeros(0,3));
 gestureMeans.Properties.VariableNames = {'precision','recall','f_score'};
 userMeans = array2table(zeros(0,3));
 userMeans.Properties.VariableNames = {'precision','recall','f_score'};
 i=1;
 start=1;
-
-for user = 1:size(finalData,2)
+iter=1;
+userfilesList = dir(char(code_path+"/output/CSV"));
+for user = 1:length(userfilesList)-2
+    
     
     %declare a folder per user for storing the csv files
     userCsvPath = char(code_path+"/output/CSV/DM"+num2str(user));
@@ -96,14 +119,15 @@ for user = 1:size(finalData,2)
     iter =1;
     for fileName = TrainfilesArray
             Train = readtable(userCsvPath+"/"+fileName{1});
-            Models{iter} = fitcsvm(Train(:,1:9),Train(:,10:10));
+            Models{iter} = fitctree(Train(:,1:9),Train(:,10:10));
             iter=iter+1;
     end
     iter=1;
-    
+   
     for fileName = TestfilesArray
-            SVMStats.('user')(i)= user;
-            SVMStats.('gesture')(i) = iter;
+            stats=[];
+            stats = horzcat(stats,user);
+            stats = horzcat(stats,iter);
             Test = readtable(userCsvPath+"/"+fileName{1});
             TestArray = table2array(Test);
             lbls = predict(Models{iter},TestArray(:,1:9));
@@ -119,23 +143,40 @@ for user = 1:size(finalData,2)
             Recall=sum(recall)/size(confMat,1);
             Precision=sum(precision)/size(confMat,1);
             F_score=2*Recall*Precision/(Precision+Recall);
-            SVMStats.('recall')(i) = Recall;
-            SVMStats.('precision')(i) = Precision;
-            SVMStats.('f_score')(i) = F_score;
+            stats = horzcat(stats,Recall);
+            stats = horzcat(stats,Precision);
+            stats = horzcat(stats,F_score);
             iter=iter+1;
             i=i+1;
+            SVMStats = vertcat(SVMStats,stats);
     end
-   userMeans.('precision')(user) = mean(table2array(DecisionTreeStats(start:start+9,3:3)),1);
-   userMeans.('recall')(user) = mean(table2array(DecisionTreeStats(start:start+9,4:4)),1);
-   userMeans.('f_score')(user) = mean(table2array(DecisionTreeStats(start:start+9,5:5)),1);
+
+end
+SVMStats  = array2table(SVMStats);
+SVMStats.Properties.VariableNames = columnNames;
+start=1;
+userMeans=[];
+ for user = 1:length(userfilesList)-2
+     stats=[];
+     stats = horzcat(stats,mean(table2array(SVMStats(start:start+9,3:3)),1));
+     stats = horzcat(stats,mean(table2array(SVMStats(start:start+9,4:4)),1));
+     stats = horzcat(stats,mean(table2array(SVMStats(start:start+9,5:5)),1));
+     userMeans = vertcat(userMeans,stats);
    start=start+10;
-end
+ end
+userMeans  = array2table(userMeans);
+userMeans.Properties.VariableNames = subcolNames;
+gestureMeans=[];
 for i=1:iter-1
-    gestureMeans.('precision')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,3:3)),1);
-    gestureMeans.('recall')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,4:4)),1);
-    gestureMeans.('f_score')(i) = mean(table2array( DecisionTreeStats(DecisionTreeStats.('gesture')==i,5:5)),1);
+      stats=[];
+     stats = horzcat(stats,mean(table2array(SVMStats(SVMStats.('gesture')==i,3:3)),1));
+     stats = horzcat(stats,mean(table2array( SVMStats(SVMStats.('gesture')==i,4:4)),1));
+     stats = horzcat(stats,mean(table2array( SVMStats(SVMStats.('gesture')==i,5:5)),1));
+     gestureMeans = vertcat(gestureMeans,stats);
+   
 end
-  
+gestureMeans  = array2table(gestureMeans);
+gestureMeans.Properties.VariableNames = subcolNames;
     disp(SVMStats);
     disp("Mean Stats for all Users")
     disp(userMeans);
@@ -144,12 +185,11 @@ end
     
 
 disp("Decision Tree model-User_Independent_Analysis");
-warning('off','all')
-DecisionTreeStats = array2table(zeros(0,4));
-DecisionTreeStats.Properties.VariableNames = {'gesture','precision','recall','f_score'};
-
+DecisionTreeStats = [];
+columnNames = {'gesture','precision','recall','f_score'};
 i=1;
 start=1;
+iter=1;
 
     %declare a folder per user for storing the csv files
     trainCsvPath = char(code_path+"/output/trainCombineCsv");
@@ -161,17 +201,16 @@ start=1;
     Models={};
     iter =1;
     for fileName = TrainfilesArray
-            Train = readtable(trainCsvPath+"/"+fileName{1});
-            
+            Train = readtable(char(trainCsvPath+"/"+fileName{1}));
             Models{iter} = fitctree(Train(:,1:9),Train(:,10:10));
             iter=iter+1;
     end
     iter=1;
+   
     for fileName = TestfilesArray
-            
-            DecisionTreeStats.('gesture')(i) = iter;
-            
-            Test = readtable(testCsvPath+"/"+fileName{1});
+            stats=[];
+            stats = horzcat(stats,iter);
+            Test = readtable(char(testCsvPath+"/"+fileName{1}));
             TestArray = table2array(Test);
             lbls = predict(Models{iter},TestArray(:,1:9));
             [confMat,order] = confusionmat(TestArray(:,10:10),lbls);
@@ -181,31 +220,31 @@ start=1;
                 precision(j)=confMat(j,j)/sum(confMat(:,j));
                 recall(j)=confMat(j,j)/sum(confMat(j,:));
             end
-            
             recall(isnan(recall))=[];
             precision(isnan(precision))=[];
             Recall=sum(recall)/size(confMat,1);
             Precision=sum(precision)/size(confMat,1);
             F_score=2*Recall*Precision/(Precision+Recall);
-            DecisionTreeStats.('recall')(i) = Recall;
-            DecisionTreeStats.('precision')(i) = Precision;
-            DecisionTreeStats.('f_score')(i) = F_score;
+            stats = horzcat(stats,Recall);
+            stats = horzcat(stats,Precision);
+            stats = horzcat(stats,F_score);
             iter=iter+1;
             i=i+1;
+            DecisionTreeStats = vertcat(DecisionTreeStats,stats);
     end
- 
 
-  
+DecisionTreeStats  = array2table(DecisionTreeStats);
+DecisionTreeStats.Properties.VariableNames = columnNames;
 disp(DecisionTreeStats);
-        
     
-disp("SVM model-User_Independent_Analysis");
 warning('off','all')
-SVMStats = array2table(zeros(0,4));
-SVMStats.Properties.VariableNames = {'gesture','precision','recall','f_score'};
 
+disp("SVM model-User_Independent_Analysis");
+SVMStats = [];
+columnNames = {'gesture','precision','recall','f_score'};
 i=1;
 start=1;
+iter=1;
 
     %declare a folder per user for storing the csv files
     trainCsvPath = char(code_path+"/output/trainCombineCsv");
@@ -222,10 +261,10 @@ start=1;
             iter=iter+1;
     end
     iter=1;
+   
     for fileName = TestfilesArray
-            
-            SVMStats.('gesture')(i) = iter;
-            
+            stats=[];
+            stats = horzcat(stats,iter);
             Test = readtable(testCsvPath+"/"+fileName{1});
             TestArray = table2array(Test);
             lbls = predict(Models{iter},TestArray(:,1:9));
@@ -236,18 +275,23 @@ start=1;
                 precision(j)=confMat(j,j)/sum(confMat(:,j));
                 recall(j)=confMat(j,j)/sum(confMat(j,:));
             end
-            
             recall(isnan(recall))=[];
             precision(isnan(precision))=[];
             Recall=sum(recall)/size(confMat,1);
             Precision=sum(precision)/size(confMat,1);
             F_score=2*Recall*Precision/(Precision+Recall);
-            SVMStats.('recall')(i) = Recall;
-            SVMStats.('precision')(i) = Precision;
-            SVMStats.('f_score')(i) = F_score;
+            stats = horzcat(stats,Recall);
+            stats = horzcat(stats,Precision);
+            stats = horzcat(stats,F_score);
             iter=iter+1;
             i=i+1;
+            SVMStats = vertcat(SVMStats,stats);
     end
-    disp(SVMStats);
-    diary off
+
+SVMStats  = array2table(SVMStats);
+SVMStats.Properties.VariableNames = columnNames;
+disp(SVMStats);
+diary off
+movefile('classifierOutputStats', char(code_path+"/output"))
+        
     
