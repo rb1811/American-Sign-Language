@@ -1,6 +1,6 @@
 Decision Tree model
-    <strong>user</strong><strong>    gesture</strong><strong>    precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>____</strong>    <strong>_______</strong>    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+    user  gesture     precision     recall     f_score
+    ____  _______     _________     _______    _______
 
      1       1         0.84439      0.78421    0.81319
      1       2         0.64626      0.71078    0.67699
@@ -194,8 +194,8 @@ Decision Tree model
     19      10         0.91667      0.99123    0.95249
 
 Mean Stats for all Users
-    <strong>precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+   precision     recall     f_score
+    _________    _______    _______
 
     0.87142      0.87684    0.87162
     0.81467       0.8404    0.82659
@@ -218,8 +218,8 @@ Mean Stats for all Users
     0.91233      0.96033    0.93461
 
 Mean Stats for all Gestures
-    <strong>precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+    precision    recall     f_score
+    _________    _______    _______
 
     0.84523      0.87106    0.85624
      0.9093      0.93062    0.91834
@@ -233,8 +233,8 @@ Mean Stats for all Gestures
     0.89292      0.89129    0.89018
 
 SVM model
-    <strong>user</strong><strong>    gesture</strong><strong>    precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>____</strong>    <strong>_______</strong>    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+    user  gesture    precision       recall    f_score
+    ____  _______     _________     _______    _______
 
      1       1         0.84439      0.78421    0.81319
      1       2         0.64626      0.71078    0.67699
@@ -428,8 +428,8 @@ SVM model
     19      10         0.91667      0.99123    0.95249
 
 Mean Stats for all Users
-    <strong>precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+    precision     recall    f_score
+    _________    _______    _______
 
     0.87142      0.87684    0.87162
     0.81467       0.8404    0.82659
@@ -452,8 +452,8 @@ Mean Stats for all Users
     0.91233      0.96033    0.93461
 
 Mean Stats for all Gestures
-    <strong>precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+   precision>    recall     f_score
+   _________     _______    _______
 
     0.84523      0.87106    0.85624
      0.9093      0.93062    0.91834
@@ -467,8 +467,8 @@ Mean Stats for all Gestures
     0.89292      0.89129    0.89018
 
 Decision Tree model-User_Independent_Analysis
-    <strong>gesture</strong><strong>    precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_______</strong>    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+   gesture    precision      recall    f_score
+   _______    _________     _______    _______
 
      1         0.70203      0.70874    0.70537
      2         0.79295       0.7951    0.79402
@@ -482,8 +482,8 @@ Decision Tree model-User_Independent_Analysis
     10         0.76312      0.78084    0.77188
 
 SVM model-User_Independent_Analysis
-    <strong>gesture</strong><strong>    precision</strong><strong>    recall </strong><strong>    f_score</strong>
-    <strong>_______</strong>    <strong>_________</strong>    <strong>_______</strong>    <strong>_______</strong>
+  gesture    precision      recall     f_score
+   _______   _________      _______    _______
 
      1         0.46715      0.48684    0.47679
      2         0.49277      0.49631    0.49454

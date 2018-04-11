@@ -293,5 +293,3 @@ SVMStats.Properties.VariableNames = columnNames;
 disp(SVMStats);
 diary off
 movefile('classifierOutputStats', char(code_path+"/output"))
-        
-    
