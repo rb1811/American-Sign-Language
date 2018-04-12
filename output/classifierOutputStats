@@ -452,7 +452,7 @@ Mean Stats for all Users
     0.91233      0.96033    0.93461
 
 Mean Stats for all Gestures
-   precision>    recall     f_score
+   precision    recall     f_score
    _________     _______    _______
 
     0.84523      0.87106    0.85624
