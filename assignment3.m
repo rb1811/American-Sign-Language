@@ -23,7 +23,7 @@ trainCsvPath = char(code_path+"/output/"+"trainCombineCsv");
 testCsvPath = char(code_path+"/output/"+"testCombinCsv");
 
 if exist(nnPath, 'dir') == 0
-        mkderir(nnPath)
+        mkdir(nnPath)
 end
 if exist(trainCsvPath, 'dir') == 0
         mkdir(trainCsvPath)
