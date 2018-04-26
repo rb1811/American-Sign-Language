@@ -8,7 +8,7 @@ firstFile =  true;
 wname = 'db1';
 [Lo_D,Hi_D,Lo_R,Hi_R] = wfilters(wname); 
 finalData={};
-NNall = [];
+NNall{2} = [];
 
 code_path =  pwd;
 path = uigetdir(pwd, 'Select Folder Containing your Data');
@@ -167,14 +167,9 @@ for k  = 1:36
     for gesture = 1:length(finalData{end})
         classLabel = repmat({gestures{gesture}},size(finalData{end}{gesture},1),1);
         NN = vertcat(NN,[num2cell(finalData{end}{gesture}) classLabel]);
-        NNall = vertcat(NNall,[num2cell(finalData{end}{gesture}) classLabel]);
-   
     end
     
     % saving the neural csv data'
-%     columnNames = {'fea1','fea2','fea3','fea4','fea5','fea6','fea7','fea8','fea9','class'};
-%     NN = cell2table(NN);
-%     NN.Properties.VariableNames=columnNames;
     cd(code_path)
     fileName  = char(subDirPath(end-3:end)+".csv");
     cell2csv(fileName, NN);
@@ -186,11 +181,6 @@ end
 
 
 cd(code_path)
-fileName  = char("neuraldata"+".csv");
-cell2csv(fileName, NNall);
-movefile(fileName, nnPath);
-traincsv{10} = [];
-testcsv{10} = [];
 
 for user = 1:size(finalData,2)
     %declare a folder per user for storing the csv files
@@ -238,7 +228,7 @@ for user = 1:size(finalData,2)
         cell2csv(fileName, vertcat(trainGesture, testGesture));
         movefile(fileName, userCsvPath);
         
-        %stoing the file assuming you need separate files for train & test
+        %storing the file assuming you need separate files for train & test
         trainFileName = char(gestures{gesture}+"_train"+".csv");
         testFileName = char(gestures{gesture}+"_test"+".csv");
         cell2csv(trainFileName, trainGesture);
@@ -246,25 +236,84 @@ for user = 1:size(finalData,2)
         cell2csv(testFileName, testGesture);
         movefile(testFileName, userCsvPath);
         
-        
-        %After one gesture is done
-        traincsv{gesture} = vertcat(traincsv{gesture}, trainGesture);
-        testcsv{gesture} = vertcat(testcsv{gesture}, testGesture);
-
     end
 end
 
 %________________________________________
-%Combined CSV files for all users. Not needed anywhere but still creating
+%User independent analysis.
 %________________________________________
 
-for i = 1:length(gestures)
+userIndDataTrain{10} = [];
+userIndDataTest{10} = []; 
+for user = 1:size(finalData,2)
+    if user <= 10
+        for gesture = 1:size(finalData{user},2)
+            trainGesture = [];
+
+            class = finalData{user}{gesture};
+            nonClass = {finalData{user}{1:end ~= gesture}};
+
+            trainPos = repmat({1},size(class,1),1);
+            tempTrainData = [num2cell(class) trainPos];
+            trainGesture = vertcat(trainGesture, tempTrainData);
+
+            for otherGesture = 1:length(nonClass)
+                trainNeg = repmat({0},size(nonClass{otherGesture},1),1);
+                tempTrainData = [num2cell(nonClass{otherGesture}) trainNeg];
+                trainGesture = vertcat(trainGesture, tempTrainData);
+            end  
+            userIndDataTrain{gesture} = vertcat(userIndDataTrain{gesture},trainGesture);
+        end 
+    end
+    if user > 10
+        for gesture = 1:size(finalData{user},2)
+            testGesture = [];
+
+            class = finalData{user}{gesture};
+            nonClass = {finalData{user}{1:end ~= gesture}};
+
+            testPos = repmat({1},size(class,1),1);
+            tempTestData = [num2cell(class) testPos];
+            testGesture = vertcat(testGesture, tempTestData);
+
+            for otherGesture = 1:length(nonClass)
+                testNeg = repmat({0},size(nonClass{otherGesture},1),1);
+                tempTestData = [num2cell(nonClass{otherGesture}) testNeg];
+                testGesture = vertcat(testGesture, tempTestData);
+            end  
+            userIndDataTest{gesture} = vertcat(userIndDataTest{gesture},testGesture); 
+        end
+    end
+end
+for user = 1:size(finalData,2)
+    if user <= 10
+        for gesture = 1:size(finalData{user},2)
+            label = repmat({gestures{gesture}},size(finalData{user}{gesture},1),1);
+            NNall{1} = vertcat(NNall{1},[num2cell(finalData{user}{gesture}) label]);
+        end
+    end
+    filename = char("train_NN.csv");
+    cell2csv(filename, NNall{1});
+    movefile(filename,nnPath);
+    if user > 10
+        for gesture = 1:size(finalData{user},2)
+            label = repmat({gestures{gesture}},size(finalData{user}{gesture},1),1);
+            NNall{2} = vertcat(NNall{2},[num2cell(finalData{user}{gesture}) label]);
+        end
+    end
+    filename = char("test_NN.csv");
+    cell2csv(filename, NNall{2});
+    movefile(filename,nnPath);
+    
+end
+
+for i = 1:length(userIndDataTrain)
     filename = char("train_"+ gestures{i} + ".csv");
-    cell2csv(filename,traincsv{i});
+    cell2csv(filename,userIndDataTrain{i});
     movefile(filename, trainCsvPath);
     
     filename = char("test_"+ gestures{i} + ".csv");
-    cell2csv(filename,testcsv{i});
+    cell2csv(filename,userIndDataTest{i});
     movefile(filename, testCsvPath);
 end
 
