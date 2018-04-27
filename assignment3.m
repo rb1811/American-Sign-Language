@@ -288,7 +288,7 @@ end
 for user = 1:size(finalData,2)
     if user <= 10
         for gesture = 1:size(finalData{user},2)
-            label = repmat({gestures{gesture}},size(finalData{user}{gesture},1),1);
+            label = repmat({gesture},size(finalData{user}{gesture},1),1);
             NNall{1} = vertcat(NNall{1},[num2cell(finalData{user}{gesture}) label]);
         end
     end
@@ -297,7 +297,7 @@ for user = 1:size(finalData,2)
     movefile(filename,nnPath);
     if user > 10
         for gesture = 1:size(finalData{user},2)
-            label = repmat({gestures{gesture}},size(finalData{user}{gesture},1),1);
+            label = repmat({gesture},size(finalData{user}{gesture},1),1);
             NNall{2} = vertcat(NNall{2},[num2cell(finalData{user}{gesture}) label]);
         end
     end
